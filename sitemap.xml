@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://example.com/</loc>
+    <lastmod>2023-11-04T16:21:27+09:00</lastmod>
+  </url><url>
+    <loc>https://example.com/post/</loc>
+    <lastmod>2023-11-04T16:21:27+09:00</lastmod>
+  </url><url>
+    <loc>https://example.com/tags/rest/</loc>
+    <lastmod>2023-11-04T16:21:27+09:00</lastmod>
+  </url><url>
+    <loc>https://example.com/post/rest/understanding_uniform_interface/</loc>
+    <lastmod>2023-11-04T16:21:27+09:00</lastmod>
+  </url><url>
+    <loc>https://example.com/tags/</loc>
+    <lastmod>2023-11-04T16:21:27+09:00</lastmod>
+  </url><url>
+    <loc>https://example.com/post/rest/understanding_resource_representation/</loc>
+    <lastmod>2023-11-04T16:21:17+09:00</lastmod>
+  </url><url>
+    <loc>https://example.com/archives/</loc>
+    <lastmod>2023-11-04T14:52:11+09:00</lastmod>
+  </url><url>
+    <loc>https://example.com/categories/</loc>
+  </url><url>
+    <loc>https://example.com/search/</loc>
+    <lastmod>2023-11-04T14:52:33+09:00</lastmod>
+  </url>
+</urlset>

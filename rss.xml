@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+
+
+
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Hugo Theme MemE</title>
+        <link>https://example.com/</link>
+        <description>MemE is a powerful and highly customizable GoHugo theme for personal blogs.</description>
+        <generator>Hugo 0.109.0 https://gohugo.io/</generator>
+        
+            <language>en</language>
+        
+        
+            <managingEditor>reuixiy@gmail.com (reuixiy)</managingEditor>
+        
+        
+            <webMaster>reuixiy@gmail.com (reuixiy)</webMaster>
+        
+        
+            <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)</copyright>
+        
+        <lastBuildDate>Mon, 06 Nov 2023 00:39:05 &#43;0900</lastBuildDate>
+        
+            <atom:link rel="self" type="application/rss&#43;xml" href="https://example.com/rss.xml" />
+        
+        
+            <item>
+                <title>REST의 Uniform Interface 이해하기</title>
+                <link>https://example.com/post/rest/understanding_uniform_interface/</link>
+                <guid isPermaLink="true">https://example.com/post/rest/understanding_uniform_interface/</guid>
+                <pubDate>Sat, 04 Nov 2023 15:43:50 &#43;0900</pubDate>
+                
+                    <author>reuixiy@gmail.com (reuixiy)</author>
+                
+                <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)</copyright>
+                
+                    <description>&lt;p&gt;우리는 &lt;code&gt;RESTful&lt;/code&gt; 한 API 를 개발하려고 노력합니다. 근데 &lt;strong&gt;&amp;lsquo;왜&amp;rsquo;&lt;/strong&gt; RESTful 한 API 를 개발해야할까요? 바로 &lt;strong&gt;&amp;lsquo;독립적 진화&amp;rsquo;&lt;/strong&gt; 를 위해서 라고 할 수 있습니다. 서버와 클라이언트가 각각 독립적으로 진화하도록 하기 위해 &lt;code&gt;RESTful&lt;/code&gt; 한 API 를 만들어 나가야 합니다.&lt;/p&gt;
+&lt;p&gt;이 글에서는 &lt;code&gt;RESTful&lt;/code&gt; 한 API 를 개발하기 위해 &lt;strong&gt;꼭 알아야 하는&lt;/strong&gt; REST 의 제약조건 중 하나인 &lt;code&gt;Uniform Interface&lt;/code&gt; 에 대해 정리해봤습니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;code&gt;REST&lt;/code&gt;는 분산 하이퍼 미디어 시스템(웹)을 위한 아키텍처 스타일입니다. 아키텍처 스타일이라는 것은 시스템의 구조와 구성 요소 간의 관계, 상호작용, 설계 원칙 등을 정의하는 일련의 원칙과 규칙의 집합인데요. REST 는 여러가지 제약 조건들로 이루어져 있어서 &amp;lsquo;하이브리드 스타일&amp;rsquo;이라고도 합니다.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Uniform Interface&lt;/code&gt; 는 &lt;code&gt;REST&lt;/code&gt; 의 제약조건 중 하나입니다. Uniform Interface 제약 조건 안에도 4가지 조건이 있습니다.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Identification of Resources&lt;/li&gt;
+&lt;li&gt;Manipulation of Resources Through Representations&lt;/li&gt;
+&lt;li&gt;Self-Descriptive Messages&lt;/li&gt;
+&lt;li&gt;Hypermedia as the Engine of Application State (HATEOAS)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;하나씩 정리해보겠습니다. 혹시 &lt;code&gt;Resource&lt;/code&gt;, &lt;code&gt;Representation&lt;/code&gt; 에 대해 잘 모르고 있다면 리소스와 표현에 대해 먼저 이해하고 오시면 좋습니다.&lt;/p&gt;
+&lt;h2 id=&#34;1-identification-of-resources&#34;&gt;1. Identification of Resources&lt;/h2&gt;
+&lt;p&gt;첫번째 조건은 &lt;code&gt;Resource&lt;/code&gt; 를 URI 로 식별할 수 있어야 한다는 것 입니다.&lt;/p&gt;
+&lt;p&gt;이 조건은 REST 의 Resource 에 대한 조건과도 같습니다. REST 에서는 Resource 가 하이퍼텍스트의 참조 대상이 될 수 있어야 한다고 하는데 같은 조건이라는 생각이 됩니다.&lt;/p&gt;
+&lt;p&gt;REST 에서는 URI 가 최대한 변경되지 않는 것을 기대한다고 합니다. 모든 것은 바뀐다는 말 빼고 다 바뀐다 라는 말을 어디선가 본 적이 있는데 어려운 말인 것 같습니다 ^^; 최대한 노오력을 해서 URI 변경을 최소화 해야할 것 같습니다.&lt;/p&gt;
+&lt;h2 id=&#34;2-manipulation-of-resources-through-representations&#34;&gt;2. Manipulation of Resources Through Representations&lt;/h2&gt;
+&lt;p&gt;두번째 조건은 &lt;strong&gt;표현을 통한 리소스의 조작&lt;/strong&gt;이라고 하는 것 입니다.&lt;/p&gt;
+&lt;p&gt;표현(Representation)이라는 것은 리소스의 현재 상태 혹은 의도된 상태를 담고 있는 정보인데요. 클라이언트와 서버가 이 &amp;lsquo;표현&amp;rsquo; 이라는 것을 주고 받으면서 리소스를 생성 / 수정 / 삭제 하는 것을 표현을 통한 리소스의 조작이라고 합니다.&lt;/p&gt;
+&lt;p&gt;우리가 주로 사용하는 Http Message 인 Request, Response 가 표현이 될 수 있습니다. 아래는 간단한 예시입니다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;POST /posts HTTP/1.1 
+Host: example.com 
+Content-Type: application/json 
+
+{ 
+  &amp;#34;title&amp;#34;: &amp;#34;제목&amp;#34;, 
+  &amp;#34;content&amp;#34;: &amp;#34;내용&amp;#34;, 
+  &amp;#34;uid&amp;#34;: 154234 
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;위의 표현으로 블로그 포스트 리소스를 생성하고 있습니다. POST 메서드 자체가 표현이 되는 것이 아니고 Request 의 헤더, 본문까지 모두 해서 &amp;lsquo;표현&amp;rsquo;이 됩니다.&lt;/p&gt;
+&lt;p&gt;참고로 표현은 표현 데이터 + 표현 데이터의 메타 데이터로 구성이 되는데, 헤더가 표현 데이터의 메타 데이터, 본문이 표현 데이터가 되겠습니다.&lt;/p&gt;
+&lt;p&gt;아래는 수정, 삭제를 하는 &amp;lsquo;표현&amp;rsquo; 예시입니다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;PUT /posts/123 HTTP/1.1 
+Host: example.com 
+Content-Type: text/plain 
+
+수정된 블로그 포스트 내용.
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;DELETE /posts/123 HTTP/1.1 
+Host: example.com
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;3-self-descriptive-messages&#34;&gt;3. Self-Descriptive Messages&lt;/h2&gt;
+&lt;p&gt;REST 논문에서는 Self-Descriptive Messages 에 대해 아래와 같이 말하고 있습니다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;REST constrains messages between components to be self-descriptive in order to support intermediate processing of interactions.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;컴포넌트들 간의 메세지가 중간 처리를 위해 스스로 설명(self-descriptive)이 가능해야 한다고 말하고 있습니다. 메시지가 어떤 종류의 데이터를 가지고 있는지, 어떤 형식으로 표현되었는지, 어떤 언어로 작성되었는지 등의 정보를 메시지 자체에서 제공하는 것 입니다. 메시지를 받은 컴포넌트는 추가적인 정보 없이도 그 메시지가 무엇을 의미하는지를 이해할 수 있습니다.&lt;/p&gt;
+&lt;p&gt;아래 예시를 보면, 클라이언트가 서버로부터 받는 응답 메세지에는 &lt;code&gt;Content-Type&lt;/code&gt;, &lt;code&gt;Content-Language&lt;/code&gt; 헤더를 사용해서 스스로 어떤 유형의 데이터인지, 어떤 언어로 표현되어 있는지 설명합니다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;HTTP/1.1 200 OK 
+Content-Type: application/json 
+Content-Language: en-US 
+Date: Mon, 08 Aug 2023 15:30:00 GMT 
+Server: SampleServer 
+
+{ 
+  &amp;#34;message&amp;#34;: &amp;#34;Hello, world!&amp;#34; 
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;Message 와 Representation 는 같은 것일까요? 로이 필딩은 Http Message 가 Representation 이라고 하기엔 덜 정확하다고 했습니다. Representation 에는 Document 나 File 등도 포함되어 있는 것을 생각해보면 Message 와 Representation 은 분리해서 생각해야할 것 같습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;메세지의 목적에 따라 조금씩 다르겠지만 아래와 같은 헤더 요소가 포함되는 것이 좋다고 합니다. (feat. ChatGPT)&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;Content-Type&lt;/code&gt;: 메시지 본문의 데이터 형식을 지정합니다. 예를 들어, JSON, XML, 텍스트 등이 있습니다.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Content-Language&lt;/code&gt;: 메시지의 내용이 작성된 언어를 지정합니다. 이를 통해 수신자는 어떤 언어로 된 데이터를 받았는지를 알 수 있습니다.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Content-Length&lt;/code&gt;: 메시지의 본문 길이를 나타냅니다. 이를 통해 수신자는 메시지의 크기를 파악하고 적절하게 처리할 수 있습니다.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Cache-Control&lt;/code&gt;: 메시지의 캐싱 정책을 지정합니다. 캐싱은 중간 컴포넌트들이 메시지를 저장하고 재사용하는데 관련된 설정입니다.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Vary&lt;/code&gt;: 메시지가 서로 다른 상황에서 다른 표현을 가지는 경우, 어떤 요소에 따라 표현이 달라질 수 있는지를 지정합니다. Content Negotiation 과 관련됩니다.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Etag&lt;/code&gt;: 엔터티(리소스)의 버전을 나타내는 태그 값입니다. 캐싱 및 조건부 요청과 관련이 있습니다.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Last-Modified&lt;/code&gt;: 엔터티가 마지막으로 수정된 시간을 나타냅니다. 조건부 요청과 캐싱과 관련이 있습니다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;한가지 더 살펴볼 것이 있습니다. 위의 &amp;ldquo;Hello, World&amp;rdquo; 예제는 Self-Descriptive 할까요? 그렇다고 하기엔 아쉬운 부분이 있습니다. 바로 응답 본문인 JSON 데이터 때문입니다.&lt;/p&gt;
+&lt;p&gt;Content-Type 을 보고 본문을 JSON 형식으로 파싱을 하면 되겠구나! 하는 것은 알 수 있지만 키 값인 &amp;ldquo;message&amp;rdquo; 가 무엇을 뜻하는지는 알 수가 없습니다. &amp;ldquo;message&amp;rdquo; 는 쉽게 유추가 가능하겠지만 &amp;ldquo;something_special&amp;rdquo; 같은 설명이 필요한 키가 있다면 이해하기 어렵습니다. 이런 문제를 해결하는 두 가지 방법을 찾아봤습니다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;MediaType 정의 - IANA 에 미디어 타입을 정의해 등록한다.&lt;/li&gt;
+&lt;li&gt;Profile 이용하기 - Link 헤더에 rel=&amp;ldquo;profile&amp;rdquo; 을 하고, 본문의 데이터에 대한 명세를 링크하도록 한다.
+&lt;ul&gt;
+&lt;li&gt;다만 이 방법은 웹 클라이언트가 RFC 6906 을 이해해야 하는데 아직(2023.08) 지원을 잘 못하고 있는 것 같다.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel&#34;&gt;https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel&lt;/a&gt;, &lt;a href=&#34;https://www.w3.org/TR/html40/types.html#h-6.7&#34;&gt;https://www.w3.org/TR/html40/types.html#h-6.7&lt;/a&gt; 에서도 profile 에 대한 정보를 찾을 수 없는데 아직 지원이 미비한 것 같다. (제가 잘 못찾은 것일 수 있습니다. 찾으시면 알려주세요..!)&lt;/li&gt;
+&lt;li&gt;대체 방법으로 HAL(Hypertext Application Language) 이라는 스펙을 사용해서 링크를 제공할 수 있다. HAL 은 쉽게 생각해서 외부 링크를 담고 있는 JSON 이나 XML 문서를 생각하면 될 것 같다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;다만 로이 필딩은 MediaType 등록이 필수이냐는 질문에 API 사용자들이 본문에 대해 이미 잘 알고 있다면 굳이 할 필요가 없다 라고 합니다. REST API 의 목적과 환경에 따라 다르게 적용하면 될 것 같습니다.&lt;/p&gt;
+&lt;p&gt;Self-Descriptive 를 만족하게 되면 서버나 클라이언트가 변경 되더라도 주고 받는 메세지에 대해 해석이 가능해집니다. 때문에 &lt;code&gt;Uniform Interface&lt;/code&gt; 의 목적인 &lt;strong&gt;독립적인 진화&lt;/strong&gt;에 도움을 주게 됩니다.&lt;/p&gt;
+&lt;h2 id=&#34;4-hypermedia-as-the-engine-of-application-state-hateoas&#34;&gt;4. Hypermedia as the Engine of Application State (HATEOAS)&lt;/h2&gt;
+&lt;p&gt;HATEOAS 는 애플리케이션의 상태가 하이퍼미디어를 통해 다른 상태로 바뀐다는 것 입니다. 하이퍼미디어는 이미지, 동영상, 텍스트 등 다른 형태의 미디어로 연결되는 링크가 포함된 모든 콘텐츠를 의미합니다.&lt;/p&gt;
+&lt;p&gt;사용자는 하이퍼미디어(주로 하이퍼링크)를 통해 원하는 상태로 이동이 가능합니다.&lt;/p&gt;
+&lt;p&gt;보통 웹 쇼핑을 할 때 원하는 상품의 상세 정보를 보기 위해 상품의 사진이나 상품명을 클릭해서 상세 정보를 보러 들어가곤 합니다. 또 상품을 주문하기 위해 &amp;lsquo;주문하기&amp;rsquo; 버튼을 클릭해 결제를 하고, 주문 완료가 되면 &amp;lsquo;주문 내역을 확인하기&amp;rsquo; 같은 버튼을 통해 주문 내역을 확인하러 갑니다.&lt;/p&gt;
+&lt;p&gt;우리는 이미 정보를 보거나, 생성하거나 하는 행위를 하이퍼미디어를 통해서 하고 있습니다. 다만 내부에서 이게 어떻게 동작하고 있는지를 봐야겠죠!&lt;/p&gt;
+&lt;p&gt;결국 HATEOAS 를 달성하는 방법을 알아야 할 것 같습니다. 가장 중요한 것은 &lt;strong&gt;링크를 포함한 응답&lt;/strong&gt;을 만들어내는 것이라고 생각이 됩니다.&lt;/p&gt;
+&lt;p&gt;보통 HTML 을 생성해서 응답할 때는 &lt;code&gt;&amp;lt;a&amp;gt;&lt;/code&gt; 태그에 다음 상태로 갈 수 있는 링크가 들어가 HATEOAS 를 만족합니다. JSON 이나 XML 을 생성해서 응답할 때가 HATEOAS 를 만족하지 못하는 경우가 많은 것 같습니다. 어떻게 HATEOAS 를 만족시킬 수 있을까요? 저는 두 가지 방법을 찾아봤습니다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;RFC 5988 (web linking)&lt;/li&gt;
+&lt;li&gt;Hypertext API Language (HAL)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;RFC 5988 (web linking)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;RFC5988은 웹에서 리소스 간의 관계를 정의하는 프레임워크를 제안한다고 합니다.
+&lt;code&gt;Link&lt;/code&gt; 헤더에 다음 상태로 갈 수 있는 여러 링크 정보를 넣어 HATEOAS 를 달성합니다. 링크가 &lt;code&gt;&amp;lt;&amp;gt;&lt;/code&gt; 안에 들어가는 것이 특이한 것 같습니다. &lt;code&gt;rel&lt;/code&gt; 은 relation 의 줄임말인데 rel 로 리소스 간의 관계를 나타낼 수 있습니다. 콤마 &lt;code&gt;,&lt;/code&gt; 로 이어서 여러 링크를 추가할 수 있습니다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Link: &amp;lt;http://example.com/TheBook/chapter2&amp;gt;; rel=&amp;#34;previous&amp;#34;;
+         title=&amp;#34;previous chapter&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Link: &amp;lt;/&amp;gt;; rel=&amp;#34;http://example.net/foo&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Link: &amp;lt;/TheBook/chapter2&amp;gt;;
+         rel=&amp;#34;previous&amp;#34;; title*=UTF-8&amp;#39;de&amp;#39;letztes%20Kapitel,
+         &amp;lt;/TheBook/chapter4&amp;gt;;
+         rel=&amp;#34;next&amp;#34;; title*=UTF-8&amp;#39;de&amp;#39;n%c3%a4chstes%20Kapitel
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;Hypertext API Language (HAL)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;HAL 은 외부 리소스에 대한 링크와 같은 하이퍼미디어를 JSON 이나 XML 에 표현하기 위한 규칙입니다. HAL 을 표현하는 미디어타입은 아래와 같습니다.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Content-Type: application/hal+xml 
+Content-Type: application/hal+json
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;HAL 의 spec 을 정의하고 있는 &lt;a href=&#34;https://stateless.group/hal_specification.html&#34;&gt;https://stateless.group/hal_specification.html&lt;/a&gt; 에 나온 예시입니다.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;_links&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;#34;self&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;href&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/orders&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;#34;curies&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[{&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;name&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;ea&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;href&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;http://example.com/docs/rels/{rel}&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;templated&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}],&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;#34;next&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;href&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/orders?page=2&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;#34;ea:find&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;#34;href&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/orders{?id}&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;#34;templated&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;currentlyProcessing&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;14&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;shippedToday&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;20&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nt&#34;&gt;&amp;#34;_embedded&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;nt&#34;&gt;&amp;#34;ea:order&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;#34;_links&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                &lt;span class=&#34;nt&#34;&gt;&amp;#34;self&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;href&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/orders/123&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                &lt;span class=&#34;nt&#34;&gt;&amp;#34;ea:basket&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;href&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/baskets/98712&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                &lt;span class=&#34;nt&#34;&gt;&amp;#34;ea:customer&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;#34;href&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;/customers/7809&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;p&#34;&gt;},&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;#34;total&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;30.00&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;#34;currency&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;USD&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            &lt;span class=&#34;nt&#34;&gt;&amp;#34;status&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;shipped&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;p&#34;&gt;}]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;HAL 은 Resource 와 Link 두 가지 간단한 개념을 표현하는데 중점을 둔다고 합니다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Resource
+&lt;ul&gt;
+&lt;li&gt;Links: 여러 링크 정보를 말합니다. (&lt;code&gt;_links&lt;/code&gt; 필드)&lt;/li&gt;
+&lt;li&gt;Embedded Resources: 해당 리소스에 포함된 기타 리소스에 대한 정보입니다.&lt;/li&gt;
+&lt;li&gt;State: JSON,  XML 데이터의 상태 데이터를 말합니다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Links
+&lt;ul&gt;
+&lt;li&gt;A Target (a URI)&lt;/li&gt;
+&lt;li&gt;A relation: 리소스와의 관계를 나타냅니다. 해당 리소스 자체를 나타낼 때는 &lt;code&gt;self&lt;/code&gt; 를 사용합니다. 참고로 모든 resources 는 스스로에 대한 링크 정보를 갖고 있어야 한다고 합니다.&lt;/li&gt;
+&lt;li&gt;A few other optional properties to help with deprecation, content negotiation, etc.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://stateless.group/assets/info-model.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;_link&lt;/code&gt; 를 작성할 때 참고할 간단한 규칙 같은 것들이 있는데 &lt;a href=&#34;https://stateless.group/hal_specification.html&#34;&gt;https://stateless.group/hal_specification.html&lt;/a&gt; 여기를 참고하면 될 것 같습니다.&lt;/p&gt;
+&lt;p&gt;HATEOAS 를 위해 링크를 포함한 응답을 작성하게 되면 서버 내에서 링크가 변경되어도 클라이언트에서는 변경할 것이 없습니다. HATEOAS 를 지키려고 하다보면 자연스럽게 서버와 클라이언트 각각 &lt;strong&gt;독립적인 발전&lt;/strong&gt;이 가능해질 것 같습니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;REST 는 추상적인 부분이 많아서 정리하는 것이 굉장히 어려웠던 것 같습니다. 조금이라도 &lt;code&gt;Uniform Interface&lt;/code&gt; 에 대해 이해하는데 도움이 되었으면 좋겠습니다!&lt;/p&gt;
+&lt;p&gt;틀렸거나, 부족하거나 추가해야할 부분이 있다면 알려주시면 감사하겠습니다 🙏&lt;/p&gt;
+&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf&#34;&gt;https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://blog.npcode.com/2017/04/03/rest%ec%9d%98-representation%ec%9d%b4%eb%9e%80-%eb%ac%b4%ec%97%87%ec%9d%b8%ea%b0%80/&#34;&gt;https://blog.npcode.com/2017/04/03/rest%ec%9d%98-representation%ec%9d%b4%eb%9e%80-%eb%ac%b4%ec%97%87%ec%9d%b8%ea%b0%80/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=RP_f5dMoHFc&#34;&gt;https://www.youtube.com/watch?v=RP_f5dMoHFc&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.inflearn.com/course/spring_rest-api/dashboard&#34;&gt;https://www.inflearn.com/course/spring_rest-api/dashboard&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.oreilly.com/library/view/restful-java-web/9781788294041/8d6247d3-6e51-4442-8bd5-610ba6a9510b.xhtml&#34;&gt;https://www.oreilly.com/library/view/restful-java-web/9781788294041/8d6247d3-6e51-4442-8bd5-610ba6a9510b.xhtml&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://restfulapi.net/hateoas/&#34;&gt;https://restfulapi.net/hateoas/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://datatracker.ietf.org/doc/html/rfc5988#section-3&#34;&gt;https://datatracker.ietf.org/doc/html/rfc5988#section-3&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+                
+                
+                
+                
+                
+                    
+                        
+                    
+                        
+                            
+                                
+                                
+                                
+                                    <category domain="https://example.com/tags/rest/">REST</category>
+                                
+                            
+                        
+                    
+                
+            </item>
+        
+            <item>
+                <title>REST의 Resource, Representation 이해하기</title>
+                <link>https://example.com/post/rest/understanding_resource_representation/</link>
+                <guid isPermaLink="true">https://example.com/post/rest/understanding_resource_representation/</guid>
+                <pubDate>Sat, 04 Nov 2023 15:43:31 &#43;0900</pubDate>
+                
+                    <author>reuixiy@gmail.com (reuixiy)</author>
+                
+                <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en)</copyright>
+                
+                    <description>&lt;p&gt;REST 에 대해 잘 이해하기 위해서는 Resource (자원), Representation (표현) 에 대해 잘 이해하고 있어야 하는 것 같습니다. 이 글에서는 REST 의 Resource 와 Representation 에 대해 정리해 봤습니다.&lt;/p&gt;
+&lt;h2 id=&#34;resource-는-무엇일까&#34;&gt;Resource 는 무엇일까?&lt;/h2&gt;
+&lt;p&gt;REST 에서 리소스는 &amp;lsquo;이름을 붙일 수 있는 모든 정보&amp;rsquo;라고 합니다. (자원보다 리소스라고 하는 것이 조금 더 자연스럽게 느껴져 리소스라고 하겠습니다) 리소스는 문서나 이미지가 될 수도 있고 날씨 정보, 현실 세계의 어떤 객체 등 모든 것이 리소스가 될 수 있습니다. 개념이 조금 추상적으로 느껴지는데요, &amp;lsquo;리소스&amp;rsquo; 자체가 말그대로 추상화된 개념이기 때문입니다. 로이 필딩의 REST 논문에서는 리소스를 &lt;strong&gt;정보의 핵심 추상화 (Key abstraction of information)&lt;/strong&gt; 라고 표현하고 있습니다. 조금 더 구체적으로 살펴보겠습니다.&lt;/p&gt;
+&lt;p&gt;먼저 REST 와 HTTP 를 떼어놓을 수 없겠습니다. HTTP 1.1 명세에서는 리소스를 &lt;strong&gt;요청의 대상&lt;/strong&gt; 이고 &lt;strong&gt;URI 로 식별이 가능&lt;/strong&gt;해야 한다고 합니다. REST 에서는 하이퍼텍스트 참조 대상이 될 수 있는 모든 개념은 리소스의 정의에 부합해야 한다고 하는데 HTTP 1.1 의 정의와 함께 이해하면 좀 더 쉬운 것 같습니다.&lt;/p&gt;
+&lt;p&gt;또한 &amp;lsquo;리소스는 특정 시점의 엔티티 집합의 개념적인 매핑&amp;rsquo;이라고 합니다. &amp;lsquo;인사말&amp;rsquo; 에 대한 예제를 살펴보면 좋을 것 같습니다. 우리나라에서는 언제 만나든지 &amp;lsquo;안녕하세요?&amp;rsquo; 가 보통의 인사말입니다. 하지만 옆 나라 일본에서는 아침, 점심, 저녁 시간에 따라 인사말이 달라지죠. 아침에는 &amp;lsquo;오하요ー고자이마스&amp;rsquo;, 점심에는 &amp;lsquo;곤니찌와&amp;rsquo;, 저녁에는 &amp;lsquo;곤방와&amp;rsquo; 라고 한다고 합니다. 여기서 리소스는 무엇이 될까요? &amp;lsquo;안녕하세요&amp;rsquo;, &amp;lsquo;오하요-고자이마스&amp;rsquo;, &amp;lsquo;곤니찌와&amp;rsquo;, &amp;lsquo;곤방와&amp;rsquo; 각각이 리소스가 될까요? REST 의 개념에 따르면 인사말 각각이 리소스가 되는 것이 아니라 &lt;strong&gt;&amp;lsquo;인사말&amp;rsquo;&lt;/strong&gt; 이라고 하는 개념이 리소스가 됩니다.&lt;/p&gt;
+&lt;p&gt;리소스의 추상적인 정의는 아래와 같은 이유로 웹 아키텍처의 주요 기능(Client-Server, Uniform-interface, HATEOAS 등)을 가능하게 한다고 합니다.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;정보의 유형이나 구현에 따라 인위적으로 구분하지 않고 많은 정보를 포괄해서 일반성을 제공한다.&lt;/li&gt;
+&lt;li&gt;Representation 에 대한 참조를 나중에 바인딩 할 수 있기 때문에 요청의 특성에 따라 Content-Negotiation 을 할 수 있다.&lt;/li&gt;
+&lt;li&gt;단일 표현이 아니라 개념을 참조할 수 있기 때문에 Representation 이 변경되어도 기존의 링크를 변경하지 않아도 된다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;representation-은-무엇일까&#34;&gt;Representation 은 무엇일까?&lt;/h2&gt;
+&lt;p&gt;REST 에서 Representation(표현)은 &lt;strong&gt;리소스의 현재 또는 의도된 상태를 담아내기 위한 정보&lt;/strong&gt;입니다. REST 의 컴포넌트(Client, Server, Cache 등)들은 리소스를 담고 있는 &lt;strong&gt;표현&lt;/strong&gt;을 주고 받는 것 입니다. 우리가 주로 사용했던 document, file, Http message(Request, Response) 등이 표현이 될 수 있습니다. 로이 필딩은 이것들이 자주 사용되는 &amp;lsquo;표현&amp;rsquo;이지만 덜 정확한 이름이라고 합니다.&lt;/p&gt;
+&lt;p&gt;표현은 &lt;strong&gt;표현 데이터&lt;/strong&gt;, &lt;strong&gt;표현 데이터를 설명하는 메타 데이터&lt;/strong&gt;로 구성되어 있습니다. 경우에 따라서는 메타 데이터를 설명하는 메타 데이터도 포함될 수 있습니다.&lt;/p&gt;
+&lt;p&gt;쉬운 이해를 위해 간단한 예시를 들어보겠습니다. 위에서 얘기했던 &amp;lsquo;인사말&amp;rsquo; 에 대한 표현입니다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;한글 인사말에 대한 HTTP 메세지 (Response)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Content-Type: text/plain
+Content-Language: ko
+Date: Mon, 14 Aug 2023 07:04:28 GMT
+Server: Greeting
+
+안녕하세요
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;일본어 인사말에 대한 HTTP 메세지 (Response)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Content-Type: text/html; charset=UTF-8
+Content-Language: ja
+Date: Mon, 14 Aug 2023 07:04:28 GMT
+Server: Greeting
+
+&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+  ...
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+  &amp;lt;div&amp;gt;
+    おはよう
+  &amp;lt;/div&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;여기서 표현 데이터는 &lt;code&gt;안녕하세요&lt;/code&gt;, &lt;code&gt;&amp;lt;html&amp;gt;..おはよう..&amp;lt;/html&amp;gt;&lt;/code&gt; 이고, 메타 데이터는 Response 헤더의 &lt;code&gt;Content-Type&lt;/code&gt;, &lt;code&gt;Content-Language&lt;/code&gt; 가 될 수 있겠습니다. 헤더 전체가 표현의 메타 데이터는 아닙니다. 아래 4개의 헤더가 표현의 메타 데이터입니다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Content-Type&lt;/li&gt;
+&lt;li&gt;Content-Encoding&lt;/li&gt;
+&lt;li&gt;Content-Language&lt;/li&gt;
+&lt;li&gt;Content-Location&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;표현의 응답 메세지 (Response) 에는 현재 표현에 특정되지 않은 메타 데이터가 포함될 수 있습니다. 응답 메세지에 포함된 제어 데이터는 컴포넌트 간의 메세지 목적을 정의한다고 합니다. 예를 들어 응답 메세지에 포함된 제어 데이터로 캐시 동작이 변경될 수 있습니다.&lt;/p&gt;
+&lt;p&gt;표현의 데이터 형식을 미디어 유형이라고 합니다. Content-Type 헤더 안에 Media type 을 표현할 수 있습니다. 수신자는 미디어 타입을 보고 사용자가 볼 수 있도록 렌더링 하는 등의 처리를 할 수 있습니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;표현이라고 된 예시를 살펴보면 우리가 그동안 익숙하게 봤던 HTTP 메세지인 Request, Response 는 모두 표현(Representation)이었습니다. 어떤 URI 로 리소스를 요청하면 우리가 받았던 것은 리소스 자체가 아니라 표현이었던 것 입니다!&lt;/p&gt;
+&lt;p&gt;이렇게 &lt;strong&gt;리소스와 표현이 분리&lt;/strong&gt;되어 있어서 같은 리소스라고 해도 다양한 표현이 만들어질 수 있습니다. 위에서 간단한 예제로 살펴봤던 표현들은 모두 같은 URI 로 요청된 응답입니다. &lt;code&gt;Content-Type&lt;/code&gt;, &lt;code&gt;Content-Language&lt;/code&gt; 를 보고 서버가 적절히 데이터를 선택(Proactive Content-Negotiation)해서 응답하기 때문에 하나의 URI 로 &amp;lsquo;인사말&amp;rsquo; 이라는 자원을 요청하고 각각 다른 표현을 받을 수 있습니다. 또 &amp;lsquo;안녕하세요&amp;rsquo;에서 &amp;lsquo;안녕하세요^^!&amp;rsquo; 라고 데이터가 변경되어도 URI 는 변경되지 않습니다. 리소스와 표현의 분리되어 있다는 것이 굉장한 유연성을 제공해주는 것 같습니다.&lt;/p&gt;
+&lt;p&gt;REST 에 대해 잘 알고 있다고 생각했는데 이렇게 글로 정리하고 또 여러가지 정보를 찾아보니 정확하게 알고 있는 것이 아니었구나 하는 것을 깨닫게 된 것 같습니다. 다음에는 REST 의 Uniform Interface 에 정리해보려고 합니다.&lt;/p&gt;
+&lt;p&gt;틀린 부분이 있다면 댓글로 알려주세요..! 혹시나 여기까지 읽으셨다면 굉장히 감사합니다. 🙏&lt;/p&gt;
+&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf&#34;&gt;https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://datatracker.ietf.org/doc/html/rfc7231&#34;&gt;https://datatracker.ietf.org/doc/html/rfc7231&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://blog.npcode.com/2017/04/03/rest%ec%9d%98-representation%ec%9d%b4%eb%9e%80-%eb%ac%b4%ec%97%87%ec%9d%b8%ea%b0%80/&#34;&gt;https://blog.npcode.com/2017/04/03/rest%ec%9d%98-representation%ec%9d%b4%eb%9e%80-%eb%ac%b4%ec%97%87%ec%9d%b8%ea%b0%80/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+                
+                
+                
+                
+                
+                    
+                        
+                    
+                        
+                            
+                                
+                                
+                                
+                                    <category domain="https://example.com/tags/rest/">REST</category>
+                                
+                            
+                        
+                    
+                
+            </item>
+        
+    </channel>
+</rss>
