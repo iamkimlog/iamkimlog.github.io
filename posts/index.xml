@@ -1,0 +1,27 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>All Posts - iamkimlog blog 🪵</title>
+        <link>https://iamkimlog.github.io/posts/</link>
+        <description>All Posts | iamkimlog blog 🪵</description>
+        <generator>Hugo -- gohugo.io</generator><language>ko-kr</language><managingEditor>= iamkimlog@gmail.com (iamkimlog)</managingEditor>
+            <webMaster>= iamkimlog@gmail.com (iamkimlog)</webMaster><copyright>iamkimlog</copyright><lastBuildDate>Mon, 25 Sep 2023 15:43:50 &#43;0900</lastBuildDate><atom:link href="https://iamkimlog.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>REST의 Uniform Interface 이해하기</title>
+    <link>https://iamkimlog.github.io/posts/rest/understanding_uniform_interface/</link>
+    <pubDate>Mon, 25 Sep 2023 15:43:50 &#43;0900</pubDate>
+    <author>iamkimlog</author>
+    <guid>https://iamkimlog.github.io/posts/rest/understanding_uniform_interface/</guid>
+    <description><![CDATA[우리는 RESTful 한 API 를 개발하려고 노력합니다. 근데 &lsquo;왜&rsquo; RESTful 한 API 를 개발해야할까요? 바로 &lsquo;독립적 진화&rsquo; 를 위해서 라고 할 수 있습니다. 서버와 클라이언트가 각각 독립적으로 진화하도록 하기 위해 RESTful 한 API 를 만들어 나가야 합니다.
+이 글에서는 RESTful 한 API 를 개발하기 위해 꼭 알아야 하는 REST 의 제약조건 중 하나인 Uniform Interface 에 대해 정리해봤습니다.
+REST는 분산 하이퍼 미디어 시스템(웹)을 위한 아키텍처 스타일입니다. 아키텍처 스타일이라는 것은 시스템의 구조와 구성 요소 간의 관계, 상호작용, 설계 원칙 등을 정의하는 일련의 원칙과 규칙의 집합인데요.]]></description>
+</item>
+<item>
+    <title>REST의 Resource, Representation 이해하기</title>
+    <link>https://iamkimlog.github.io/posts/rest/understanding_resource_representation/</link>
+    <pubDate>Sun, 24 Sep 2023 15:43:31 &#43;0900</pubDate>
+    <author>iamkimlog</author>
+    <guid>https://iamkimlog.github.io/posts/rest/understanding_resource_representation/</guid>
+    <description><![CDATA[REST 에 대해 잘 이해하기 위해서는 Resource (자원), Representation (표현) 에 대해 잘 이해하고 있어야 하는 것 같습니다. 이 글에서는 REST 의 Resource 와 Representation 에 대해 정리해 봤습니다.
+Resource 는 무엇일까? REST 에서 리소스는 &lsquo;이름을 붙일 수 있는 모든 정보&rsquo;라고 합니다. (자원보다 리소스라고 하는 것이 조금 더 자연스럽게 느껴져 리소스라고 하겠습니다) 리소스는 문서나 이미지가 될 수도 있고 날씨 정보, 현실 세계의 어떤 객체 등 모든 것이 리소스가 될 수 있습니다.]]></description>
+</item>
+</channel>
+</rss>

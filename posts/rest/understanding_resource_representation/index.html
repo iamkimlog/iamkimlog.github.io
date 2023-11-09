@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko-kr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>REST의 Resource, Representation 이해하기 - iamkimlog blog 🪵</title><meta name="Description" content=""><meta property="og:title" content="REST의 Resource, Representation 이해하기" />
+<meta property="og:description" content="REST 에 대해 잘 이해하기 위해서는 Resource (자원), Representation (표현) 에 대해 잘 이해하고 있어야 하는 것 같습니다. 이 글에서는 REST 의 Resource 와 Representation 에 대해 정리해 봤습니다.
+Resource 는 무엇일까? REST 에서 리소스는 &lsquo;이름을 붙일 수 있는 모든 정보&rsquo;라고 합니다. (자원보다 리소스라고 하는 것이 조금 더 자연스럽게 느껴져 리소스라고 하겠습니다) 리소스는 문서나 이미지가 될 수도 있고 날씨 정보, 현실 세계의 어떤 객체 등 모든 것이 리소스가 될 수 있습니다." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://iamkimlog.github.io/posts/rest/understanding_resource_representation/" /><meta property="og:image" content="https://iamkimlog.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-09-24T15:43:31+09:00" />
+<meta property="article:modified_time" content="2023-09-24T15:43:31+09:00" /><meta property="og:site_name" content="Programmer iamkimlog Blog" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://iamkimlog.github.io/logo.png"/>
+
+<meta name="twitter:title" content="REST의 Resource, Representation 이해하기"/>
+<meta name="twitter:description" content="REST 에 대해 잘 이해하기 위해서는 Resource (자원), Representation (표현) 에 대해 잘 이해하고 있어야 하는 것 같습니다. 이 글에서는 REST 의 Resource 와 Representation 에 대해 정리해 봤습니다.
+Resource 는 무엇일까? REST 에서 리소스는 &lsquo;이름을 붙일 수 있는 모든 정보&rsquo;라고 합니다. (자원보다 리소스라고 하는 것이 조금 더 자연스럽게 느껴져 리소스라고 하겠습니다) 리소스는 문서나 이미지가 될 수도 있고 날씨 정보, 현실 세계의 어떤 객체 등 모든 것이 리소스가 될 수 있습니다."/>
+<meta name="application-name" content="My cool site">
+<meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://iamkimlog.github.io/posts/rest/understanding_resource_representation/" /><link rel="next" href="https://iamkimlog.github.io/posts/rest/understanding_uniform_interface/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "REST의 Resource, Representation 이해하기",
+        "inLanguage": "ko-kr",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/iamkimlog.github.io\/posts\/rest\/understanding_resource_representation\/"
+        },"genre": "posts","keywords": "REST","wordcount":  657 ,
+        "url": "https:\/\/iamkimlog.github.io\/posts\/rest\/understanding_resource_representation\/","datePublished": "2023-09-24T15:43:31+09:00","dateModified": "2023-09-24T15:43:31+09:00","license": "iamkimlog","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "iamkimlog"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="iamkimlog blog 🪵">Programmer iamkimlog 🪵 Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="iamkimlog blog 🪵">Programmer iamkimlog 🪵 Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">REST의 Resource, Representation 이해하기</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://iamkimlog.github.io" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>iamkimlog</a></span>&nbsp;<span class="post-category">included in <a href="/categories/web/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>web</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-09-24">2023-09-24</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;657 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;4 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#resource-는-무엇일까">Resource 는 무엇일까?</a></li>
+    <li><a href="#representation-은-무엇일까">Representation 은 무엇일까?</a></li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>REST 에 대해 잘 이해하기 위해서는 Resource (자원), Representation (표현) 에 대해 잘 이해하고 있어야 하는 것 같습니다. 이 글에서는 REST 의 Resource 와 Representation 에 대해 정리해 봤습니다.</p>
+<h2 id="resource-는-무엇일까">Resource 는 무엇일까?</h2>
+<p>REST 에서 리소스는 &lsquo;이름을 붙일 수 있는 모든 정보&rsquo;라고 합니다. (자원보다 리소스라고 하는 것이 조금 더 자연스럽게 느껴져 리소스라고 하겠습니다) 리소스는 문서나 이미지가 될 수도 있고 날씨 정보, 현실 세계의 어떤 객체 등 모든 것이 리소스가 될 수 있습니다. 개념이 조금 추상적으로 느껴지는데요, &lsquo;리소스&rsquo; 자체가 말그대로 추상화된 개념이기 때문입니다. 로이 필딩의 REST 논문에서는 리소스를 <strong>정보의 핵심 추상화 (Key abstraction of information)</strong> 라고 표현하고 있습니다. 조금 더 구체적으로 살펴보겠습니다.</p>
+<p>먼저 REST 와 HTTP 를 떼어놓을 수 없겠습니다. HTTP 1.1 명세에서는 리소스를 <strong>요청의 대상</strong> 이고 <strong>URI 로 식별이 가능</strong>해야 한다고 합니다. REST 에서는 하이퍼텍스트 참조 대상이 될 수 있는 모든 개념은 리소스의 정의에 부합해야 한다고 하는데 HTTP 1.1 의 정의와 함께 이해하면 좀 더 쉬운 것 같습니다.</p>
+<p>또한 &lsquo;리소스는 특정 시점의 엔티티 집합의 개념적인 매핑&rsquo;이라고 합니다. &lsquo;인사말&rsquo; 에 대한 예제를 살펴보면 좋을 것 같습니다. 우리나라에서는 언제 만나든지 &lsquo;안녕하세요?&rsquo; 가 보통의 인사말입니다. 하지만 옆 나라 일본에서는 아침, 점심, 저녁 시간에 따라 인사말이 달라지죠. 아침에는 &lsquo;오하요ー고자이마스&rsquo;, 점심에는 &lsquo;곤니찌와&rsquo;, 저녁에는 &lsquo;곤방와&rsquo; 라고 한다고 합니다. 여기서 리소스는 무엇이 될까요? &lsquo;안녕하세요&rsquo;, &lsquo;오하요-고자이마스&rsquo;, &lsquo;곤니찌와&rsquo;, &lsquo;곤방와&rsquo; 각각이 리소스가 될까요? REST 의 개념에 따르면 인사말 각각이 리소스가 되는 것이 아니라 <strong>&lsquo;인사말&rsquo;</strong> 이라고 하는 개념이 리소스가 됩니다.</p>
+<p>리소스의 추상적인 정의는 아래와 같은 이유로 웹 아키텍처의 주요 기능(Client-Server, Uniform-interface, HATEOAS 등)을 가능하게 한다고 합니다.</p>
+<ol>
+<li>정보의 유형이나 구현에 따라 인위적으로 구분하지 않고 많은 정보를 포괄해서 일반성을 제공한다.</li>
+<li>Representation 에 대한 참조를 나중에 바인딩 할 수 있기 때문에 요청의 특성에 따라 Content-Negotiation 을 할 수 있다.</li>
+<li>단일 표현이 아니라 개념을 참조할 수 있기 때문에 Representation 이 변경되어도 기존의 링크를 변경하지 않아도 된다.</li>
+</ol>
+<h2 id="representation-은-무엇일까">Representation 은 무엇일까?</h2>
+<p>REST 에서 Representation(표현)은 <strong>리소스의 현재 또는 의도된 상태를 담아내기 위한 정보</strong>입니다. REST 의 컴포넌트(Client, Server, Cache 등)들은 리소스를 담고 있는 <strong>표현</strong>을 주고 받는 것 입니다. 우리가 주로 사용했던 document, file, Http message(Request, Response) 등이 표현이 될 수 있습니다. 로이 필딩은 이것들이 자주 사용되는 &lsquo;표현&rsquo;이지만 덜 정확한 이름이라고 합니다.</p>
+<p>표현은 <strong>표현 데이터</strong>, <strong>표현 데이터를 설명하는 메타 데이터</strong>로 구성되어 있습니다. 경우에 따라서는 메타 데이터를 설명하는 메타 데이터도 포함될 수 있습니다.</p>
+<p>쉬운 이해를 위해 간단한 예시를 들어보겠습니다. 위에서 얘기했던 &lsquo;인사말&rsquo; 에 대한 표현입니다.</p>
+<ul>
+<li>한글 인사말에 대한 HTTP 메세지 (Response)</li>
+</ul>
+<pre tabindex="0"><code>Content-Type: text/plain
+Content-Language: ko
+Date: Mon, 14 Aug 2023 07:04:28 GMT
+Server: Greeting
+
+안녕하세요
+</code></pre><ul>
+<li>일본어 인사말에 대한 HTTP 메세지 (Response)</li>
+</ul>
+<pre tabindex="0"><code>Content-Type: text/html; charset=UTF-8
+Content-Language: ja
+Date: Mon, 14 Aug 2023 07:04:28 GMT
+Server: Greeting
+
+&lt;html&gt;
+&lt;head&gt;
+  ...
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div&gt;
+    おはよう
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>여기서 표현 데이터는 <code>안녕하세요</code>, <code>&lt;html&gt;..おはよう..&lt;/html&gt;</code> 이고, 메타 데이터는 Response 헤더의 <code>Content-Type</code>, <code>Content-Language</code> 가 될 수 있겠습니다. 헤더 전체가 표현의 메타 데이터는 아닙니다. 아래 4개의 헤더가 표현의 메타 데이터입니다.</p>
+<ul>
+<li>Content-Type</li>
+<li>Content-Encoding</li>
+<li>Content-Language</li>
+<li>Content-Location</li>
+</ul>
+<p>표현의 응답 메세지 (Response) 에는 현재 표현에 특정되지 않은 메타 데이터가 포함될 수 있습니다. 응답 메세지에 포함된 제어 데이터는 컴포넌트 간의 메세지 목적을 정의한다고 합니다. 예를 들어 응답 메세지에 포함된 제어 데이터로 캐시 동작이 변경될 수 있습니다.</p>
+<p>표현의 데이터 형식을 미디어 유형이라고 합니다. Content-Type 헤더 안에 Media type 을 표현할 수 있습니다. 수신자는 미디어 타입을 보고 사용자가 볼 수 있도록 렌더링 하는 등의 처리를 할 수 있습니다.</p>
+<hr>
+<p>표현이라고 된 예시를 살펴보면 우리가 그동안 익숙하게 봤던 HTTP 메세지인 Request, Response 는 모두 표현(Representation)이었습니다. 어떤 URI 로 리소스를 요청하면 우리가 받았던 것은 리소스 자체가 아니라 표현이었던 것 입니다!</p>
+<p>이렇게 <strong>리소스와 표현이 분리</strong>되어 있어서 같은 리소스라고 해도 다양한 표현이 만들어질 수 있습니다. 위에서 간단한 예제로 살펴봤던 표현들은 모두 같은 URI 로 요청된 응답입니다. <code>Content-Type</code>, <code>Content-Language</code> 를 보고 서버가 적절히 데이터를 선택(Proactive Content-Negotiation)해서 응답하기 때문에 하나의 URI 로 &lsquo;인사말&rsquo; 이라는 자원을 요청하고 각각 다른 표현을 받을 수 있습니다. 또 &lsquo;안녕하세요&rsquo;에서 &lsquo;안녕하세요^^!&rsquo; 라고 데이터가 변경되어도 URI 는 변경되지 않습니다. 리소스와 표현의 분리되어 있다는 것이 굉장한 유연성을 제공해주는 것 같습니다.</p>
+<p>REST 에 대해 잘 알고 있다고 생각했는데 이렇게 글로 정리하고 또 여러가지 정보를 찾아보니 정확하게 알고 있는 것이 아니었구나 하는 것을 깨닫게 된 것 같습니다. 다음에는 REST 의 Uniform Interface 에 정리해보려고 합니다.</p>
+<p>틀린 부분이 있다면 댓글로 알려주세요..! 혹시나 여기까지 읽으셨다면 굉장히 감사합니다. 🙏</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf" target="_blank" rel="noopener noreffer ">https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf</a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc7231" target="_blank" rel="noopener noreffer ">https://datatracker.ietf.org/doc/html/rfc7231</a></li>
+<li><a href="https://blog.npcode.com/2017/04/03/rest%ec%9d%98-representation%ec%9d%b4%eb%9e%80-%eb%ac%b4%ec%97%87%ec%9d%b8%ea%b0%80/" target="_blank" rel="noopener noreffer ">https://blog.npcode.com/2017/04/03/rest%ec%9d%98-representation%ec%9d%b4%eb%9e%80-%eb%ac%b4%ec%97%87%ec%9d%b8%ea%b0%80/</a></li>
+</ul>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2023-09-24</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://iamkimlog.github.io/posts/rest/understanding_resource_representation/" data-title="REST의 Resource, Representation 이해하기" data-hashtags="REST"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://iamkimlog.github.io/posts/rest/understanding_resource_representation/" data-hashtag="REST"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://iamkimlog.github.io/posts/rest/understanding_resource_representation/" data-title="REST의 Resource, Representation 이해하기"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://iamkimlog.github.io/posts/rest/understanding_resource_representation/" data-title="REST의 Resource, Representation 이해하기"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://iamkimlog.github.io/posts/rest/understanding_resource_representation/" data-title="REST의 Resource, Representation 이해하기"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/rest/">REST</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+            <a href="/posts/rest/understanding_uniform_interface/" class="next" rel="next" title="REST의 Uniform Interface 이해하기">REST의 Uniform Interface 이해하기<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.109.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://iamkimlog.github.io" target="_blank">iamkimlog</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

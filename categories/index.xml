@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Categories - Category - iamkimlog blog 🪵</title>
+        <link>https://iamkimlog.github.io/categories/</link>
+        <description>Categories - Category - iamkimlog blog 🪵</description>
+        <generator>Hugo -- gohugo.io</generator><language>ko-kr</language><managingEditor>= iamkimlog@gmail.com (iamkimlog)</managingEditor>
+            <webMaster>= iamkimlog@gmail.com (iamkimlog)</webMaster><copyright>iamkimlog</copyright><lastBuildDate>Mon, 25 Sep 2023 15:43:50 &#43;0900</lastBuildDate><atom:link href="https://iamkimlog.github.io/categories/" rel="self" type="application/rss+xml" /><item>
+    <title>web</title>
+    <link>https://iamkimlog.github.io/categories/web/</link>
+    <pubDate>Mon, 25 Sep 2023 15:43:50 &#43;0900</pubDate>
+    <author>iamkimlog</author>
+    <guid>https://iamkimlog.github.io/categories/web/</guid>
+    <description><![CDATA[]]></description>
+</item>
+</channel>
+</rss>

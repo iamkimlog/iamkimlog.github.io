@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko-kr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>REST의 Uniform Interface 이해하기 - iamkimlog blog 🪵</title><meta name="Description" content=""><meta property="og:title" content="REST의 Uniform Interface 이해하기" />
+<meta property="og:description" content="우리는 RESTful 한 API 를 개발하려고 노력합니다. 근데 &lsquo;왜&rsquo; RESTful 한 API 를 개발해야할까요? 바로 &lsquo;독립적 진화&rsquo; 를 위해서 라고 할 수 있습니다. 서버와 클라이언트가 각각 독립적으로 진화하도록 하기 위해 RESTful 한 API 를 만들어 나가야 합니다.
+이 글에서는 RESTful 한 API 를 개발하기 위해 꼭 알아야 하는 REST 의 제약조건 중 하나인 Uniform Interface 에 대해 정리해봤습니다.
+REST는 분산 하이퍼 미디어 시스템(웹)을 위한 아키텍처 스타일입니다. 아키텍처 스타일이라는 것은 시스템의 구조와 구성 요소 간의 관계, 상호작용, 설계 원칙 등을 정의하는 일련의 원칙과 규칙의 집합인데요." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://iamkimlog.github.io/posts/rest/understanding_uniform_interface/" /><meta property="og:image" content="https://iamkimlog.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-09-25T15:43:50+09:00" />
+<meta property="article:modified_time" content="2023-09-25T15:43:50+09:00" /><meta property="og:site_name" content="Programmer iamkimlog Blog" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://iamkimlog.github.io/logo.png"/>
+
+<meta name="twitter:title" content="REST의 Uniform Interface 이해하기"/>
+<meta name="twitter:description" content="우리는 RESTful 한 API 를 개발하려고 노력합니다. 근데 &lsquo;왜&rsquo; RESTful 한 API 를 개발해야할까요? 바로 &lsquo;독립적 진화&rsquo; 를 위해서 라고 할 수 있습니다. 서버와 클라이언트가 각각 독립적으로 진화하도록 하기 위해 RESTful 한 API 를 만들어 나가야 합니다.
+이 글에서는 RESTful 한 API 를 개발하기 위해 꼭 알아야 하는 REST 의 제약조건 중 하나인 Uniform Interface 에 대해 정리해봤습니다.
+REST는 분산 하이퍼 미디어 시스템(웹)을 위한 아키텍처 스타일입니다. 아키텍처 스타일이라는 것은 시스템의 구조와 구성 요소 간의 관계, 상호작용, 설계 원칙 등을 정의하는 일련의 원칙과 규칙의 집합인데요."/>
+<meta name="application-name" content="My cool site">
+<meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://iamkimlog.github.io/posts/rest/understanding_uniform_interface/" /><link rel="prev" href="https://iamkimlog.github.io/posts/rest/understanding_resource_representation/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "REST의 Uniform Interface 이해하기",
+        "inLanguage": "ko-kr",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/iamkimlog.github.io\/posts\/rest\/understanding_uniform_interface\/"
+        },"genre": "posts","keywords": "REST","wordcount":  1353 ,
+        "url": "https:\/\/iamkimlog.github.io\/posts\/rest\/understanding_uniform_interface\/","datePublished": "2023-09-25T15:43:50+09:00","dateModified": "2023-09-25T15:43:50+09:00","license": "iamkimlog","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "iamkimlog"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="iamkimlog blog 🪵">Programmer iamkimlog 🪵 Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="iamkimlog blog 🪵">Programmer iamkimlog 🪵 Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">REST의 Uniform Interface 이해하기</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://iamkimlog.github.io" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>iamkimlog</a></span>&nbsp;<span class="post-category">included in <a href="/categories/web/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>web</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-09-25">2023-09-25</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1353 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;7 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-identification-of-resources">1. Identification of Resources</a></li>
+    <li><a href="#2-manipulation-of-resources-through-representations">2. Manipulation of Resources Through Representations</a></li>
+    <li><a href="#3-self-descriptive-messages">3. Self-Descriptive Messages</a></li>
+    <li><a href="#4-hypermedia-as-the-engine-of-application-state-hateoas">4. Hypermedia as the Engine of Application State (HATEOAS)</a></li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>우리는 <code>RESTful</code> 한 API 를 개발하려고 노력합니다. 근데 <strong>&lsquo;왜&rsquo;</strong> RESTful 한 API 를 개발해야할까요? 바로 <strong>&lsquo;독립적 진화&rsquo;</strong> 를 위해서 라고 할 수 있습니다. 서버와 클라이언트가 각각 독립적으로 진화하도록 하기 위해 <code>RESTful</code> 한 API 를 만들어 나가야 합니다.</p>
+<p>이 글에서는 <code>RESTful</code> 한 API 를 개발하기 위해 <strong>꼭 알아야 하는</strong> REST 의 제약조건 중 하나인 <code>Uniform Interface</code> 에 대해 정리해봤습니다.</p>
+<hr>
+<p><code>REST</code>는 분산 하이퍼 미디어 시스템(웹)을 위한 아키텍처 스타일입니다. 아키텍처 스타일이라는 것은 시스템의 구조와 구성 요소 간의 관계, 상호작용, 설계 원칙 등을 정의하는 일련의 원칙과 규칙의 집합인데요. REST 는 여러가지 제약 조건들로 이루어져 있어서 &lsquo;하이브리드 스타일&rsquo;이라고도 합니다.</p>
+<p><code>Uniform Interface</code> 는 <code>REST</code> 의 제약조건 중 하나입니다. Uniform Interface 제약 조건 안에도 4가지 조건이 있습니다.</p>
+<ol>
+<li>Identification of Resources</li>
+<li>Manipulation of Resources Through Representations</li>
+<li>Self-Descriptive Messages</li>
+<li>Hypermedia as the Engine of Application State (HATEOAS)</li>
+</ol>
+<p>하나씩 정리해보겠습니다. 혹시 <code>Resource</code>, <code>Representation</code> 에 대해 잘 모르고 있다면 리소스와 표현에 대해 먼저 이해하고 오시면 좋습니다.</p>
+<h2 id="1-identification-of-resources">1. Identification of Resources</h2>
+<p>첫번째 조건은 <code>Resource</code> 를 URI 로 식별할 수 있어야 한다는 것 입니다.</p>
+<p>이 조건은 REST 의 Resource 에 대한 조건과도 같습니다. REST 에서는 Resource 가 하이퍼텍스트의 참조 대상이 될 수 있어야 한다고 하는데 같은 조건이라는 생각이 됩니다.</p>
+<p>REST 에서는 URI 가 최대한 변경되지 않는 것을 기대한다고 합니다. 모든 것은 바뀐다는 말 빼고 다 바뀐다 라는 말을 어디선가 본 적이 있는데 어려운 말인 것 같습니다 ^^; 최대한 노오력을 해서 URI 변경을 최소화 해야할 것 같습니다.</p>
+<h2 id="2-manipulation-of-resources-through-representations">2. Manipulation of Resources Through Representations</h2>
+<p>두번째 조건은 <strong>표현을 통한 리소스의 조작</strong>이라고 하는 것 입니다.</p>
+<p>표현(Representation)이라는 것은 리소스의 현재 상태 혹은 의도된 상태를 담고 있는 정보인데요. 클라이언트와 서버가 이 &lsquo;표현&rsquo; 이라는 것을 주고 받으면서 리소스를 생성 / 수정 / 삭제 하는 것을 표현을 통한 리소스의 조작이라고 합니다.</p>
+<p>우리가 주로 사용하는 Http Message 인 Request, Response 가 표현이 될 수 있습니다. 아래는 간단한 예시입니다.</p>
+<pre tabindex="0"><code>POST /posts HTTP/1.1 
+Host: example.com 
+Content-Type: application/json 
+
+{ 
+  &#34;title&#34;: &#34;제목&#34;, 
+  &#34;content&#34;: &#34;내용&#34;, 
+  &#34;uid&#34;: 154234 
+}
+</code></pre><p>위의 표현으로 블로그 포스트 리소스를 생성하고 있습니다. POST 메서드 자체가 표현이 되는 것이 아니고 Request 의 헤더, 본문까지 모두 해서 &lsquo;표현&rsquo;이 됩니다.</p>
+<p>참고로 표현은 표현 데이터 + 표현 데이터의 메타 데이터로 구성이 되는데, 헤더가 표현 데이터의 메타 데이터, 본문이 표현 데이터가 되겠습니다.</p>
+<p>아래는 수정, 삭제를 하는 &lsquo;표현&rsquo; 예시입니다.</p>
+<pre tabindex="0"><code>PUT /posts/123 HTTP/1.1 
+Host: example.com 
+Content-Type: text/plain 
+
+수정된 블로그 포스트 내용.
+</code></pre><pre tabindex="0"><code>DELETE /posts/123 HTTP/1.1 
+Host: example.com
+</code></pre><h2 id="3-self-descriptive-messages">3. Self-Descriptive Messages</h2>
+<p>REST 논문에서는 Self-Descriptive Messages 에 대해 아래와 같이 말하고 있습니다.</p>
+<blockquote>
+<p>REST constrains messages between components to be self-descriptive in order to support intermediate processing of interactions.</p>
+</blockquote>
+<p>컴포넌트들 간의 메세지가 중간 처리를 위해 스스로 설명(self-descriptive)이 가능해야 한다고 말하고 있습니다. 메시지가 어떤 종류의 데이터를 가지고 있는지, 어떤 형식으로 표현되었는지, 어떤 언어로 작성되었는지 등의 정보를 메시지 자체에서 제공하는 것 입니다. 메시지를 받은 컴포넌트는 추가적인 정보 없이도 그 메시지가 무엇을 의미하는지를 이해할 수 있습니다.</p>
+<p>아래 예시를 보면, 클라이언트가 서버로부터 받는 응답 메세지에는 <code>Content-Type</code>, <code>Content-Language</code> 헤더를 사용해서 스스로 어떤 유형의 데이터인지, 어떤 언어로 표현되어 있는지 설명합니다.</p>
+<pre tabindex="0"><code>HTTP/1.1 200 OK 
+Content-Type: application/json 
+Content-Language: en-US 
+Date: Mon, 08 Aug 2023 15:30:00 GMT 
+Server: SampleServer 
+
+{ 
+  &#34;message&#34;: &#34;Hello, world!&#34; 
+}
+</code></pre><blockquote>
+<p>Message 와 Representation 는 같은 것일까요? 로이 필딩은 Http Message 가 Representation 이라고 하기엔 덜 정확하다고 했습니다. Representation 에는 Document 나 File 등도 포함되어 있는 것을 생각해보면 Message 와 Representation 은 분리해서 생각해야할 것 같습니다.</p>
+</blockquote>
+<p>메세지의 목적에 따라 조금씩 다르겠지만 아래와 같은 헤더 요소가 포함되는 것이 좋다고 합니다. (feat. ChatGPT)</p>
+<ol>
+<li><code>Content-Type</code>: 메시지 본문의 데이터 형식을 지정합니다. 예를 들어, JSON, XML, 텍스트 등이 있습니다.</li>
+<li><code>Content-Language</code>: 메시지의 내용이 작성된 언어를 지정합니다. 이를 통해 수신자는 어떤 언어로 된 데이터를 받았는지를 알 수 있습니다.</li>
+<li><code>Content-Length</code>: 메시지의 본문 길이를 나타냅니다. 이를 통해 수신자는 메시지의 크기를 파악하고 적절하게 처리할 수 있습니다.</li>
+<li><code>Cache-Control</code>: 메시지의 캐싱 정책을 지정합니다. 캐싱은 중간 컴포넌트들이 메시지를 저장하고 재사용하는데 관련된 설정입니다.</li>
+<li><code>Vary</code>: 메시지가 서로 다른 상황에서 다른 표현을 가지는 경우, 어떤 요소에 따라 표현이 달라질 수 있는지를 지정합니다. Content Negotiation 과 관련됩니다.</li>
+<li><code>Etag</code>: 엔터티(리소스)의 버전을 나타내는 태그 값입니다. 캐싱 및 조건부 요청과 관련이 있습니다.</li>
+<li><code>Last-Modified</code>: 엔터티가 마지막으로 수정된 시간을 나타냅니다. 조건부 요청과 캐싱과 관련이 있습니다.</li>
+</ol>
+<p>한가지 더 살펴볼 것이 있습니다. 위의 &ldquo;Hello, World&rdquo; 예제는 Self-Descriptive 할까요? 그렇다고 하기엔 아쉬운 부분이 있습니다. 바로 응답 본문인 JSON 데이터 때문입니다.</p>
+<p>Content-Type 을 보고 본문을 JSON 형식으로 파싱을 하면 되겠구나! 하는 것은 알 수 있지만 키 값인 &ldquo;message&rdquo; 가 무엇을 뜻하는지는 알 수가 없습니다. &ldquo;message&rdquo; 는 쉽게 유추가 가능하겠지만 &ldquo;something_special&rdquo; 같은 설명이 필요한 키가 있다면 이해하기 어렵습니다. 이런 문제를 해결하는 두 가지 방법을 찾아봤습니다.</p>
+<ul>
+<li>MediaType 정의 - IANA 에 미디어 타입을 정의해 등록한다.</li>
+<li>Profile 이용하기 - Link 헤더에 rel=&ldquo;profile&rdquo; 을 하고, 본문의 데이터에 대한 명세를 링크하도록 한다.
+<ul>
+<li>다만 이 방법은 웹 클라이언트가 RFC 6906 을 이해해야 하는데 아직(2023.08) 지원을 잘 못하고 있는 것 같다.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel" target="_blank" rel="noopener noreffer ">https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel</a>, <a href="https://www.w3.org/TR/html40/types.html#h-6.7" target="_blank" rel="noopener noreffer ">https://www.w3.org/TR/html40/types.html#h-6.7</a> 에서도 profile 에 대한 정보를 찾을 수 없는데 아직 지원이 미비한 것 같다. (제가 잘 못찾은 것일 수 있습니다. 찾으시면 알려주세요..!)</li>
+<li>대체 방법으로 HAL(Hypertext Application Language) 이라는 스펙을 사용해서 링크를 제공할 수 있다. HAL 은 쉽게 생각해서 외부 링크를 담고 있는 JSON 이나 XML 문서를 생각하면 될 것 같다.</li>
+</ul>
+</li>
+</ul>
+<p>다만 로이 필딩은 MediaType 등록이 필수이냐는 질문에 API 사용자들이 본문에 대해 이미 잘 알고 있다면 굳이 할 필요가 없다 라고 합니다. REST API 의 목적과 환경에 따라 다르게 적용하면 될 것 같습니다.</p>
+<p>Self-Descriptive 를 만족하게 되면 서버나 클라이언트가 변경 되더라도 주고 받는 메세지에 대해 해석이 가능해집니다. 때문에 <code>Uniform Interface</code> 의 목적인 <strong>독립적인 진화</strong>에 도움을 주게 됩니다.</p>
+<h2 id="4-hypermedia-as-the-engine-of-application-state-hateoas">4. Hypermedia as the Engine of Application State (HATEOAS)</h2>
+<p>HATEOAS 는 애플리케이션의 상태가 하이퍼미디어를 통해 다른 상태로 바뀐다는 것 입니다. 하이퍼미디어는 이미지, 동영상, 텍스트 등 다른 형태의 미디어로 연결되는 링크가 포함된 모든 콘텐츠를 의미합니다.</p>
+<p>사용자는 하이퍼미디어(주로 하이퍼링크)를 통해 원하는 상태로 이동이 가능합니다.</p>
+<p>보통 웹 쇼핑을 할 때 원하는 상품의 상세 정보를 보기 위해 상품의 사진이나 상품명을 클릭해서 상세 정보를 보러 들어가곤 합니다. 또 상품을 주문하기 위해 &lsquo;주문하기&rsquo; 버튼을 클릭해 결제를 하고, 주문 완료가 되면 &lsquo;주문 내역을 확인하기&rsquo; 같은 버튼을 통해 주문 내역을 확인하러 갑니다.</p>
+<p>우리는 이미 정보를 보거나, 생성하거나 하는 행위를 하이퍼미디어를 통해서 하고 있습니다. 다만 내부에서 이게 어떻게 동작하고 있는지를 봐야겠죠!</p>
+<p>결국 HATEOAS 를 달성하는 방법을 알아야 할 것 같습니다. 가장 중요한 것은 <strong>링크를 포함한 응답</strong>을 만들어내는 것이라고 생각이 됩니다.</p>
+<p>보통 HTML 을 생성해서 응답할 때는 <code>&lt;a&gt;</code> 태그에 다음 상태로 갈 수 있는 링크가 들어가 HATEOAS 를 만족합니다. JSON 이나 XML 을 생성해서 응답할 때가 HATEOAS 를 만족하지 못하는 경우가 많은 것 같습니다. 어떻게 HATEOAS 를 만족시킬 수 있을까요? 저는 두 가지 방법을 찾아봤습니다.</p>
+<ul>
+<li>RFC 5988 (web linking)</li>
+<li>Hypertext API Language (HAL)</li>
+</ul>
+<p><strong>RFC 5988 (web linking)</strong></p>
+<p>RFC5988은 웹에서 리소스 간의 관계를 정의하는 프레임워크를 제안한다고 합니다.
+<code>Link</code> 헤더에 다음 상태로 갈 수 있는 여러 링크 정보를 넣어 HATEOAS 를 달성합니다. 링크가 <code>&lt;&gt;</code> 안에 들어가는 것이 특이한 것 같습니다. <code>rel</code> 은 relation 의 줄임말인데 rel 로 리소스 간의 관계를 나타낼 수 있습니다. 콤마 <code>,</code> 로 이어서 여러 링크를 추가할 수 있습니다.</p>
+<pre tabindex="0"><code>Link: &lt;http://example.com/TheBook/chapter2&gt;; rel=&#34;previous&#34;;
+         title=&#34;previous chapter&#34;
+</code></pre><pre tabindex="0"><code>Link: &lt;/&gt;; rel=&#34;http://example.net/foo&#34;
+</code></pre><pre tabindex="0"><code>Link: &lt;/TheBook/chapter2&gt;;
+         rel=&#34;previous&#34;; title*=UTF-8&#39;de&#39;letztes%20Kapitel,
+         &lt;/TheBook/chapter4&gt;;
+         rel=&#34;next&#34;; title*=UTF-8&#39;de&#39;n%c3%a4chstes%20Kapitel
+</code></pre><p><strong>Hypertext API Language (HAL)</strong></p>
+<p>HAL 은 외부 리소스에 대한 링크와 같은 하이퍼미디어를 JSON 이나 XML 에 표현하기 위한 규칙입니다. HAL 을 표현하는 미디어타입은 아래와 같습니다.</p>
+<pre tabindex="0"><code>Content-Type: application/hal+xml 
+Content-Type: application/hal+json
+</code></pre><p>HAL 의 spec 을 정의하고 있는 <a href="https://stateless.group/hal_specification.html" target="_blank" rel="noopener noreffer ">https://stateless.group/hal_specification.html</a> 에 나온 예시입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;_links&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;self&#34;</span>: { <span style="color:#f92672">&#34;href&#34;</span>: <span style="color:#e6db74">&#34;/orders&#34;</span> },
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;curies&#34;</span>: [{ <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;ea&#34;</span>, <span style="color:#f92672">&#34;href&#34;</span>: <span style="color:#e6db74">&#34;http://example.com/docs/rels/{rel}&#34;</span>, <span style="color:#f92672">&#34;templated&#34;</span>: <span style="color:#66d9ef">true</span> }],
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;next&#34;</span>: { <span style="color:#f92672">&#34;href&#34;</span>: <span style="color:#e6db74">&#34;/orders?page=2&#34;</span> },
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;ea:find&#34;</span>: {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;href&#34;</span>: <span style="color:#e6db74">&#34;/orders{?id}&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;templated&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;currentlyProcessing&#34;</span>: <span style="color:#ae81ff">14</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;shippedToday&#34;</span>: <span style="color:#ae81ff">20</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;_embedded&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;ea:order&#34;</span>: [{
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;_links&#34;</span>: {
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;self&#34;</span>: { <span style="color:#f92672">&#34;href&#34;</span>: <span style="color:#e6db74">&#34;/orders/123&#34;</span> },
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;ea:basket&#34;</span>: { <span style="color:#f92672">&#34;href&#34;</span>: <span style="color:#e6db74">&#34;/baskets/98712&#34;</span> },
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&#34;ea:customer&#34;</span>: { <span style="color:#f92672">&#34;href&#34;</span>: <span style="color:#e6db74">&#34;/customers/7809&#34;</span> }
+</span></span><span style="display:flex;"><span>            },
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;total&#34;</span>: <span style="color:#ae81ff">30.00</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;currency&#34;</span>: <span style="color:#e6db74">&#34;USD&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;status&#34;</span>: <span style="color:#e6db74">&#34;shipped&#34;</span>
+</span></span><span style="display:flex;"><span>        }]
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>HAL 은 Resource 와 Link 두 가지 간단한 개념을 표현하는데 중점을 둔다고 합니다.</p>
+<ul>
+<li>Resource
+<ul>
+<li>Links: 여러 링크 정보를 말합니다. (<code>_links</code> 필드)</li>
+<li>Embedded Resources: 해당 리소스에 포함된 기타 리소스에 대한 정보입니다.</li>
+<li>State: JSON,  XML 데이터의 상태 데이터를 말합니다.</li>
+</ul>
+</li>
+<li>Links
+<ul>
+<li>A Target (a URI)</li>
+<li>A relation: 리소스와의 관계를 나타냅니다. 해당 리소스 자체를 나타낼 때는 <code>self</code> 를 사용합니다. 참고로 모든 resources 는 스스로에 대한 링크 정보를 갖고 있어야 한다고 합니다.</li>
+<li>A few other optional properties to help with deprecation, content negotiation, etc.</li>
+</ul>
+</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://stateless.group/assets/info-model.png"
+        data-srcset="https://stateless.group/assets/info-model.png, https://stateless.group/assets/info-model.png 1.5x, https://stateless.group/assets/info-model.png 2x"
+        data-sizes="auto"
+        alt="https://stateless.group/assets/info-model.png"
+        title="https://stateless.group/assets/info-model.png" /></p>
+<p><code>_link</code> 를 작성할 때 참고할 간단한 규칙 같은 것들이 있는데 <a href="https://stateless.group/hal_specification.html" target="_blank" rel="noopener noreffer ">https://stateless.group/hal_specification.html</a> 여기를 참고하면 될 것 같습니다.</p>
+<p>HATEOAS 를 위해 링크를 포함한 응답을 작성하게 되면 서버 내에서 링크가 변경되어도 클라이언트에서는 변경할 것이 없습니다. HATEOAS 를 지키려고 하다보면 자연스럽게 서버와 클라이언트 각각 <strong>독립적인 발전</strong>이 가능해질 것 같습니다.</p>
+<hr>
+<p>REST 는 추상적인 부분이 많아서 정리하는 것이 굉장히 어려웠던 것 같습니다. 조금이라도 <code>Uniform Interface</code> 에 대해 이해하는데 도움이 되었으면 좋겠습니다!</p>
+<p>틀렸거나, 부족하거나 추가해야할 부분이 있다면 알려주시면 감사하겠습니다 🙏</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf" target="_blank" rel="noopener noreffer ">https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf</a></li>
+<li><a href="https://blog.npcode.com/2017/04/03/rest%ec%9d%98-representation%ec%9d%b4%eb%9e%80-%eb%ac%b4%ec%97%87%ec%9d%b8%ea%b0%80/" target="_blank" rel="noopener noreffer ">https://blog.npcode.com/2017/04/03/rest%ec%9d%98-representation%ec%9d%b4%eb%9e%80-%eb%ac%b4%ec%97%87%ec%9d%b8%ea%b0%80/</a></li>
+<li><a href="https://www.youtube.com/watch?v=RP_f5dMoHFc" target="_blank" rel="noopener noreffer ">https://www.youtube.com/watch?v=RP_f5dMoHFc</a></li>
+<li><a href="https://www.inflearn.com/course/spring_rest-api/dashboard" target="_blank" rel="noopener noreffer ">https://www.inflearn.com/course/spring_rest-api/dashboard</a></li>
+<li><a href="https://www.oreilly.com/library/view/restful-java-web/9781788294041/8d6247d3-6e51-4442-8bd5-610ba6a9510b.xhtml" target="_blank" rel="noopener noreffer ">https://www.oreilly.com/library/view/restful-java-web/9781788294041/8d6247d3-6e51-4442-8bd5-610ba6a9510b.xhtml</a></li>
+<li><a href="https://restfulapi.net/hateoas/" target="_blank" rel="noopener noreffer ">https://restfulapi.net/hateoas/</a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc5988#section-3" target="_blank" rel="noopener noreffer ">https://datatracker.ietf.org/doc/html/rfc5988#section-3</a></li>
+</ul>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2023-09-25</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://iamkimlog.github.io/posts/rest/understanding_uniform_interface/" data-title="REST의 Uniform Interface 이해하기" data-hashtags="REST"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://iamkimlog.github.io/posts/rest/understanding_uniform_interface/" data-hashtag="REST"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://iamkimlog.github.io/posts/rest/understanding_uniform_interface/" data-title="REST의 Uniform Interface 이해하기"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://iamkimlog.github.io/posts/rest/understanding_uniform_interface/" data-title="REST의 Uniform Interface 이해하기"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://iamkimlog.github.io/posts/rest/understanding_uniform_interface/" data-title="REST의 Uniform Interface 이해하기"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/rest/">REST</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/rest/understanding_resource_representation/" class="prev" rel="prev" title="REST의 Resource, Representation 이해하기"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>REST의 Resource, Representation 이해하기</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.109.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://iamkimlog.github.io" target="_blank">iamkimlog</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
