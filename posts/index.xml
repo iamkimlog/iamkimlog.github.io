@@ -21,7 +21,8 @@ REST는 분산 하이퍼 미디어 시스템(웹)을 위한 아키텍처 스타
     <author>iamkimlog</author>
     <guid>https://iamkimlog.github.io/posts/rest/understanding_resource_representation/</guid>
     <description><![CDATA[REST 에 대해 잘 이해하기 위해서는 Resource (자원), Representation (표현) 에 대해 잘 이해하고 있어야 하는 것 같습니다. 이 글에서는 REST 의 Resource 와 Representation 에 대해 정리해 봤습니다.
-Resource 는 무엇일까? REST 에서 리소스는 &lsquo;이름을 붙일 수 있는 모든 정보&rsquo;라고 합니다. (자원보다 리소스라고 하는 것이 조금 더 자연스럽게 느껴져 리소스라고 하겠습니다) 리소스는 문서나 이미지가 될 수도 있고 날씨 정보, 현실 세계의 어떤 객체 등 모든 것이 리소스가 될 수 있습니다.]]></description>
+Resource REST 에서 리소스는 &lsquo;이름을 붙일 수 있는 모든 정보&rsquo;라고 합니다. 리소스는 문서나 이미지가 될 수도 있고 날씨 정보, 현실 세계의 어떤 객체 등 모든 것이 리소스가 될 수 있습니다.
+로이 필딩의 REST 논문에서는 리소스를 정보의 핵심 추상화 (Key abstraction of information) 라고 표현하고 있습니다.]]></description>
 </item>
 </channel>
 </rss>
